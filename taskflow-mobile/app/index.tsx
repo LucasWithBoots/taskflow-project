@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import {
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   TextInput,
@@ -14,6 +15,7 @@ import { createTask, loadTasks } from "./http/axios";
 
 export default function Index() {
   const [taskTitle, setTaskTitle] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: tasks } = useQuery({
@@ -33,6 +35,12 @@ export default function Index() {
     if (taskTitle.trim()) {
       addTask({ title: taskTitle });
     }
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    setRefreshing(false);
   };
 
   return (
@@ -86,6 +94,9 @@ export default function Index() {
         renderItem={({ item }) => <TaskComponent task={item} />}
         style={{ width: "100%" }}
         contentContainerStyle={{ gap: 8 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
     </View>
   );
