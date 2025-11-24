@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: notification-worker
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: 5672
+    username: guest
+    password: guest
+
+logging:
+  level:
+    root: INFO
+    org.springframework.amqp: INFO
+    com.taskflow: INFO

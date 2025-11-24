@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: 5672
+    username: guest
+    password: guest
+
+task-service:
+  base-url: ${TASK_SERVICE_URL:http://localhost:8081}
+
+logging:
+  level:
+    root: INFO
+    org.springframework.amqp: INFO
+    com.taskflow: INFO
