@@ -1,5 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -9,17 +10,30 @@ import {
   View,
 } from "react-native";
 import TaskComponent from "./components/TaskComponent";
-import { loadTasks } from "./http/axios";
+import { createTask, loadTasks } from "./http/axios";
 
 export default function Index() {
+  const [taskTitle, setTaskTitle] = useState("");
+  const queryClient = useQueryClient();
+
   const { data: tasks } = useQuery({
     queryKey: ["tasks"],
     queryFn: () => loadTasks(),
   });
 
-  // const {mutate} = useMutation({
+  const { mutate: addTask, isPending } = useMutation({
+    mutationFn: createTask,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      setTaskTitle("");
+    },
+  });
 
-  // })
+  const handleAddTask = () => {
+    if (taskTitle.trim()) {
+      addTask({ title: taskTitle });
+    }
+  };
 
   return (
     <View
@@ -35,7 +49,10 @@ export default function Index() {
         <Text style={{ fontFamily: "Poppins-SemiBold", fontSize: 21 }}>
           Tasks
         </Text>
-        <Text style={{ fontFamily: "Poppins-Regular" }}>0 of 0 completed</Text>
+        <Text style={{ fontFamily: "Poppins-Regular" }}>
+          {tasks?.filter((t) => t.completed).length || 0} of{" "}
+          {tasks?.length || 0} completed
+        </Text>
       </View>
 
       <View
@@ -49,8 +66,15 @@ export default function Index() {
         <TextInput
           placeholder="Add a new task..."
           style={styles.addTaskInput}
+          value={taskTitle}
+          onChangeText={setTaskTitle}
+          onSubmitEditing={handleAddTask}
         />
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={handleAddTask}
+          disabled={isPending}
+        >
           <Ionicons name="add" size={24} color="white" />
           <Text style={styles.addButtonText}>Add</Text>
         </TouchableOpacity>
@@ -61,6 +85,7 @@ export default function Index() {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <TaskComponent task={item} />}
         style={{ width: "100%" }}
+        contentContainerStyle={{ gap: 8 }}
       />
     </View>
   );
