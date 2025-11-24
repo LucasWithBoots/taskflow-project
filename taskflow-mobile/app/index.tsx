@@ -1,6 +1,13 @@
-import { Text, View } from "react-native";
+import { useQuery } from "@tanstack/react-query";
+import { FlatList, Text, View } from "react-native";
+import { loadTasks } from "./http/axios";
 
 export default function Index() {
+  const { data: tasks } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: () => loadTasks(),
+  });
+
   return (
     <View
       style={{
@@ -9,7 +16,11 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <FlatList
+        data={tasks}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({item}) => <View><Text>{item.title}</Text></View>}
+      />
     </View>
   );
 }
