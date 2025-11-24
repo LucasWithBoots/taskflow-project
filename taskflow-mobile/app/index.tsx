@@ -114,6 +114,7 @@ export default function Index() {
         )}
         style={{ width: "100%" }}
         contentContainerStyle={{ gap: 8 }}
+        ListFooterComponent={<View style={{ height: 32 }} />} // <-- footer spacer
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }

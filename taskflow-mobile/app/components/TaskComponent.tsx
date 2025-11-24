@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import Animated, { FadeInUp, FadeOutRight } from "react-native-reanimated";
+import Animated, { FadeInUp } from "react-native-reanimated";
 import { Task } from "../types";
 
 interface TaskComponentProps {
@@ -15,11 +15,7 @@ export default function TaskComponent({
   onDelete,
 }: TaskComponentProps) {
   return (
-    <Animated.View
-      style={styles.container}
-      entering={FadeInUp}
-      exiting={FadeOutRight}
-    >
+    <Animated.View style={styles.container} entering={FadeInUp}>
       <TouchableOpacity
         style={[
           styles.checkTaskTouchable,
