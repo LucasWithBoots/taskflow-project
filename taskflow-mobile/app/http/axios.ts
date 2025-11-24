@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Task } from "../types";
 
-const API_BASE = "http://192.168.1.12:8080/api";
+const API_BASE = process.env.EXPO_PUBLIC_API_IP;
 
 export async function loadTasks() {
   try {
