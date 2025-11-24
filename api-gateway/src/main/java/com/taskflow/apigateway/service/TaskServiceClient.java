@@ -2,6 +2,7 @@ package com.taskflow.apigateway.service;
 
 import com.taskflow.apigateway.dto.TaskPayload;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,5 +31,13 @@ public class TaskServiceClient {
             return List.of();
         }
         return Arrays.asList(response);
+    }
+
+    public TaskPayload completeTask(Long id) {
+        return restTemplate.postForObject(baseUrl + "/tasks/" + id + "/complete", null, TaskPayload.class);
+    }
+
+    public void deleteTask(Long id) {
+        restTemplate.delete(baseUrl + "/tasks/" + id);
     }
 }

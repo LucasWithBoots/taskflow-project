@@ -1,11 +1,42 @@
+import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Task } from "../types";
 
-export default function TaskComponent({ task }: { task: Task }) {
+interface TaskComponentProps {
+  task: Task;
+  onComplete: (taskId: number) => void;
+  onDelete: (taskId: number) => void;
+}
+
+export default function TaskComponent({
+  task,
+  onComplete,
+  onDelete,
+}: TaskComponentProps) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.checkTaskTouchable} />
-      <Text style={styles.containerTitle}>{task.title}</Text>
+      <TouchableOpacity
+        style={[
+          styles.checkTaskTouchable,
+          task.completed && styles.checkTaskCompleted,
+        ]}
+        onPress={() => onComplete(task.id)}
+      >
+        {task.completed && (
+          <Ionicons name="checkmark" size={16} color="white" />
+        )}
+      </TouchableOpacity>
+      <Text
+        style={[
+          styles.containerTitle,
+          task.completed && styles.containerTitleCompleted,
+        ]}
+      >
+        {task.title}
+      </Text>
+      <TouchableOpacity onPress={() => onDelete(task.id)}>
+        <Ionicons name="trash-outline" size={20} color="#FF4444" />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -23,11 +54,21 @@ const styles = StyleSheet.create({
   },
   containerTitle: {
     fontFamily: "Poppins-Regular",
+    flex: 1,
+  },
+  containerTitleCompleted: {
+    textDecorationLine: "line-through",
+    color: "#888",
   },
   checkTaskTouchable: {
     width: 20,
     height: 20,
     borderWidth: 1,
     borderColor: "black",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkTaskCompleted: {
+    backgroundColor: "black",
   },
 });

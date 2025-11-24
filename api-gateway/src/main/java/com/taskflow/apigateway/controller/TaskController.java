@@ -34,4 +34,15 @@ public class TaskController {
     public List<TaskPayload> listTasks() {
         return taskServiceClient.listTasks();
     }
+
+    @PostMapping("/tasks/{id}/complete")
+    public TaskPayload completeTask(@PathVariable Long id) {
+        return taskServiceClient.completeTask(id);
+    }
+
+    @DeleteMapping("/tasks/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTask(@PathVariable Long id) {
+        taskServiceClient.deleteTask(id);
+    }
 }

@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 import TaskComponent from "./components/TaskComponent";
-import { createTask, loadTasks } from "./http/axios";
+import { completeTask, createTask, deleteTask, loadTasks } from "./http/axios";
 
 export default function Index() {
   const [taskTitle, setTaskTitle] = useState("");
@@ -28,6 +28,20 @@ export default function Index() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       setTaskTitle("");
+    },
+  });
+
+  const { mutate: completeTaskMutation } = useMutation({
+    mutationFn: completeTask,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+
+  const { mutate: deleteTaskMutation } = useMutation({
+    mutationFn: deleteTask,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   });
 
@@ -91,7 +105,13 @@ export default function Index() {
       <FlatList
         data={tasks}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <TaskComponent task={item} />}
+        renderItem={({ item }) => (
+          <TaskComponent
+            task={item}
+            onComplete={completeTaskMutation}
+            onDelete={deleteTaskMutation}
+          />
+        )}
         style={{ width: "100%" }}
         contentContainerStyle={{ gap: 8 }}
         refreshControl={
