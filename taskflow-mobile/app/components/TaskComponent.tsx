@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import Animated, { FadeInUp, FadeOutRight } from "react-native-reanimated";
 import { Task } from "../types";
 
 interface TaskComponentProps {
@@ -14,7 +15,11 @@ export default function TaskComponent({
   onDelete,
 }: TaskComponentProps) {
   return (
-    <View style={styles.container}>
+    <Animated.View
+      style={styles.container}
+      entering={FadeInUp}
+      exiting={FadeOutRight}
+    >
       <TouchableOpacity
         style={[
           styles.checkTaskTouchable,
@@ -35,9 +40,9 @@ export default function TaskComponent({
         {task.title}
       </Text>
       <TouchableOpacity onPress={() => onDelete(task.id)}>
-        <Ionicons name="trash-outline" size={20} color="#FF4444" />
+        <Ionicons name="trash-outline" size={20} color="#BAB8B8" />
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   );
 }
 
