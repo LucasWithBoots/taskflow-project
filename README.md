@@ -1,7 +1,5 @@
 # TaskFlow – Gerenciador de Tarefas em Microserviços
 
-**Aluno:** Lucas Carrijo Ferrari - 2024.1.08.016
-
 TaskFlow é um sistema de gerenciamento de tarefas com notificações assíncronas, desenvolvido em arquitetura de microserviços.
 
 Ele é composto por:
