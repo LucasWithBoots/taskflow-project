@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { Task } from "../types";
 
@@ -27,14 +27,22 @@ export default function TaskComponent({
           <Ionicons name="checkmark" size={16} color="white" />
         )}
       </TouchableOpacity>
-      <Text
-        style={[
-          styles.containerTitle,
-          task.completed && styles.containerTitleCompleted,
-        ]}
-      >
-        {task.title}
-      </Text>
+
+      {/* Title + description stack */}
+      <View style={styles.textWrapper}>
+        <Text
+          style={[
+            styles.containerTitle,
+            task.completed && styles.containerTitleCompleted,
+          ]}
+        >
+          {task.title}
+        </Text>
+        {task.description ? (
+          <Text style={styles.containerDescription}>{task.description}</Text>
+        ) : null}
+      </View>
+
       <TouchableOpacity onPress={() => onDelete(task.id)}>
         <Ionicons name="trash-outline" size={20} color="#BAB8B8" />
       </TouchableOpacity>
@@ -53,13 +61,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 15,
   },
+  textWrapper: {
+    flex: 1,
+    justifyContent: "center",
+  },
   containerTitle: {
     fontFamily: "Poppins-Regular",
-    flex: 1,
   },
   containerTitleCompleted: {
     textDecorationLine: "line-through",
     color: "#888",
+  },
+  containerDescription: {
+    marginTop: 4,
+    fontSize: 13,
+    color: "#666",
+    fontFamily: "Poppins-Regular",
   },
   checkTaskTouchable: {
     width: 20,
