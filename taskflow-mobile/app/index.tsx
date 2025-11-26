@@ -124,7 +124,7 @@ export default function Index() {
               color: taskTitle ? "black" : "#888",
             }}
           >
-            {taskTitle || "Add a new task... (tap to add description)"}
+            {taskTitle || "Add a new task..."}
           </Text>
         </TouchableOpacity>
 
@@ -197,6 +197,7 @@ export default function Index() {
                 flexDirection: "row",
                 justifyContent: "flex-end",
                 gap: 8,
+                marginTop: 12,
               }}
             >
               <TouchableOpacity
@@ -264,6 +265,5 @@ const styles = StyleSheet.create({
   modalButton: {
     paddingHorizontal: 14,
     paddingVertical: 10,
-    borderRadius: 6,
   },
 });
